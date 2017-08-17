@@ -16,6 +16,13 @@ If you have not installed pytest yet:
 $ pip install pytest
 ```
 
+We're using `pysmash` to get tournament brackets:
+```
+$ pip install pysmash
+```
+
+
+
 # Teardown
 Teardown python environment:
 ```
