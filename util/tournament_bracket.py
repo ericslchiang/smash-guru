@@ -12,8 +12,8 @@ from math import log
 
 class TreeNode(object):
     def __init__(self):
-        self.player_one = {"tag": ""}
-        self.player_two = {"tag": ""}
+        self.player_one = None
+        self.player_two = None
 
         self.left = None
         self.right = None
@@ -57,7 +57,7 @@ def build_bracket_tree(bracket_depth, players):
         new_node.left = build_bracket_tree(bracket_depth-1, players)
         new_node.right = build_bracket_tree(bracket_depth-1, players)
         
-    return new_node 
+    return new_node
 
 if __name__ == "__main__":
     tournament_name = "get-on-my-level-2016"
