@@ -4,7 +4,7 @@ Description: Pulls tournament brackets from smash.gg, and return the number of
 players in the simulation bracket, which is then used return the top seeds of 
 the bracket.
 """
-
+#TODO(ericslchiang): Change "{"tag": ""}" to None
 from __future__ import print_function
 import pysmash
 import pprint
@@ -12,8 +12,8 @@ from math import log
 
 class TreeNode(object):
     def __init__(self):
-        self.player_one = None
-        self.player_two = None
+        self.player_one = {"tag": ""}
+        self.player_two = {"tag": ""}
 
         self.left = None
         self.right = None
