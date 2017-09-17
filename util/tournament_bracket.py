@@ -8,7 +8,9 @@ the bracket.
 from __future__ import print_function
 import pysmash
 import pprint
-from math import log
+from math import log, exp
+from head_to_head import head_to_head_read
+
 
 class TreeNode(object):
     def __init__(self):
@@ -75,6 +77,25 @@ def build_bracket_tree(bracket_depth, players):
         
     return new_node
 
+def winrate(player_1, player_2, tag_rank, head_to_head):
+    p1_index = None
+    p2_index = None
+    tag1 = player_1["tag"].lower()
+    tag2 = player_2["tag"].lower()
+    if tag1 in tag_rank:
+        p1_index = tag_rank[tag1]
+    if tag2 in tag_rank:
+        p2_index = tag_rank[tag2]
+    if not p2_index:
+        return 1.0
+    if not p1_index:
+        return 0.0
+    p1_set_count = head_to_head[p1_index][p2_index]
+    p2_set_count = head_to_head[p2_index][p1_index]
+    p1_winrate = (0.5 / (1 + exp(-(player_1["seed"] - player_2["seed"]))) + 
+                 0.5 * (p1_set_count/(p1_set_count + p2_set_count)))
+    return p1_winrate
+
 if __name__ == "__main__":
     tournament_name = "get-on-my-level-2016"
     tournament_event ="melee-singles"
@@ -99,3 +120,5 @@ if __name__ == "__main__":
 
     print(knapSack(budget, cost, val))
     """
+    tag_rank, head_to_head = head_to_head_read("head_to_head.txt")
+    #print(winrate(top_players[2], top_players[3], tag_rank, head_to_head))
