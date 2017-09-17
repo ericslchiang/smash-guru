@@ -90,10 +90,10 @@ def winrate(player_1, player_2, tag_rank, head_to_head):
         return 1.0
     if not p1_index:
         return 0.0
-    p1_set_count = head_to_head[p1_index][p2_index]
-    p2_set_count = head_to_head[p2_index][p1_index]
+    p1_set_win_p2 = head_to_head[p1_index][p2_index]
+    p2_set_win_p1 = head_to_head[p2_index][p1_index]
     p1_winrate = (0.5 / (1 + exp(-(player_1["seed"] - player_2["seed"]))) + 
-                 0.5 * (p1_set_count/(p1_set_count + p2_set_count)))
+                 0.5 * (p1_set_win_p2/(p1_set_win_p2 + p2_set_win_p1)))
     return p1_winrate
 
 if __name__ == "__main__":
@@ -121,4 +121,6 @@ if __name__ == "__main__":
     print(knapSack(budget, cost, val))
     """
     tag_rank, head_to_head = head_to_head_read("head_to_head.txt")
+    #For now program assumes the user inputs the higher seed first and the 
+    #lower seed second. A fix will be implemented at a later time.
     #print(winrate(top_players[2], top_players[3], tag_rank, head_to_head))
