@@ -8,7 +8,9 @@ the bracket.
 from __future__ import print_function
 import pysmash
 import pprint
-from math import log
+from math import log, exp
+from head_to_head import head_to_head_read
+
 
 class TreeNode(object):
     def __init__(self):
@@ -75,6 +77,37 @@ def build_bracket_tree(bracket_depth, players):
         
     return new_node
 
+#For now program assumes the user inputs the higher seed first and the 
+#lower seed second. A fix will be implemented at a later time.
+def winrate(player_1, player_2, tag_rank, head_to_head):
+    if (player_1["seed"] > player_2["seed"]):
+        lo_seed = player_1["seed"]
+        hi_seed = player_2["seed"]
+        lo_seed_tag = player_1["tag"].lower()
+        hi_seed_tag = player_2["tag"].lower()
+    else:
+        hi_seed = player_1["seed"]
+        lo_seed = player_2["seed"]
+        hi_seed_tag = player_1["tag"].lower()
+        lo_seed_tag = player_2["tag"].lower()
+
+    
+    hi_seed_index = None
+    lo_seed_index = None
+    if hi_seed_tag in tag_rank:
+        hi_seed_index = tag_rank[hi_seed_tag]
+    if lo_seed_tag in tag_rank:
+        lo_seed_index = tag_rank[lo_seed_tag]
+    if not lo_seed_index:
+        return 1.0
+    if not hi_seed_index:
+        return 0.0
+    hi_seed_set_win_lo_seed = head_to_head[hi_seed_index][lo_seed_index]
+    lo_seed_set_win_hi_seed = head_to_head[lo_seed_index][hi_seed_index]
+    hi_seed_winrate = (0.5 / (1 + exp(-(lo_seed - hi_seed))) + 
+                 0.5 * (hi_seed_set_win_lo_seed/(hi_seed_set_win_lo_seed + lo_seed_set_win_hi_seed)))
+    return hi_seed_winrate
+
 if __name__ == "__main__":
     tournament_name = "get-on-my-level-2016"
     tournament_event ="melee-singles"
@@ -99,3 +132,5 @@ if __name__ == "__main__":
 
     print(knapSack(budget, cost, val))
     """
+    tag_rank, head_to_head = head_to_head_read("head_to_head.txt")
+    print(winrate(top_players[2], top_players[3], tag_rank, head_to_head))
