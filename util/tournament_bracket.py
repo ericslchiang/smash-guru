@@ -52,6 +52,7 @@ def traverse(rootnode):
 
 smash = pysmash.SmashGG()
 pp = pprint.PrettyPrinter(indent=4)
+
 def init_sim_bracket(tournament_name, tournament_event):
     brackets = smash.tournament_show_event_brackets(tournament_name,
                                                     tournament_event)
@@ -108,29 +109,22 @@ def winrate(player_1, player_2, tag_rank, head_to_head):
                  0.5 * (hi_seed_set_win_lo_seed/(hi_seed_set_win_lo_seed + lo_seed_set_win_hi_seed)))
     return hi_seed_winrate
 
-if __name__ == "__main__":
-    tournament_name = "get-on-my-level-2016"
-    tournament_event ="melee-singles"
-    top_players = get_top_players(tournament_name, tournament_event)
+def bracket_builder(tournament_name, tournament_event, top_players):
     num_top_players = len(top_players)
     bracket_size = init_sim_bracket(tournament_name, tournament_event)
-    print(bracket_size)
     winners_players = top_players[:num_top_players/2]
     winners_players.reverse()
     losers_players = top_players[num_top_players/2:]
     losers_players.reverse()
     winners_bracket = build_bracket_tree(log(bracket_size/2, 2), winners_players)
     losers_bracket = build_bracket_tree(log(bracket_size/2, 2), losers_players)
+    return (winners_bracket, losers_bracket)
 
+if __name__ == "__main__":    
+    top_players = get_top_players("get-on-my-level-2016", "melee-singles")
+    winners_bracket, losers_bracket = bracket_builder("get-on-my-level-2016", "melee-singles", top_players)
     traverse(winners_bracket)
     traverse(losers_bracket)
-    """
-    Test cases for the optimization program
-    val = [60, 100, 120]
-    cost = [10, 20, 30]
-    budget = 50
 
-    print(knapSack(budget, cost, val))
-    """
     tag_rank, head_to_head = head_to_head_read("head_to_head.txt")
     print(winrate(top_players[2], top_players[3], tag_rank, head_to_head))
