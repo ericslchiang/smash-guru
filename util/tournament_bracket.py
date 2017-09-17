@@ -11,18 +11,9 @@ import pprint
 from math import log
 from head_to_head import head_to_head_read
 from print_tree import print_tree
+from tree_node import TreeNode
 from winrate import winrate
 
-
-class TreeNode(object):
-    def __init__(self):
-        self.player_one = {"tag": ""}
-        self.player_two = {"tag": ""}
-        self.has_simmed = False
-        self.winner = None
-
-        self.left = None
-        self.right = None
 
 def knapSack(budget, cost, val):
     n = len(val)
