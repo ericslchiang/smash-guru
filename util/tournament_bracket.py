@@ -77,10 +77,12 @@ def build_bracket_tree(bracket_depth, players):
         
     return new_node
 
+#For now program assumes the user inputs the higher seed first and the 
+#lower seed second. A fix will be implemented at a later time.
 def winrate(player_1, player_2, tag_rank, head_to_head):
     if (player_1["seed"] > player_2["seed"]):
-        hi_seed = player_2["seed"]
         lo_seed = player_1["seed"]
+        hi_seed = player_2["seed"]
         lo_seed_tag = player_1["tag"].lower()
         hi_seed_tag = player_2["tag"].lower()
     else:
@@ -105,26 +107,7 @@ def winrate(player_1, player_2, tag_rank, head_to_head):
     hi_seed_winrate = (0.5 / (1 + exp(-(lo_seed - hi_seed))) + 
                  0.5 * (hi_seed_set_win_lo_seed/(hi_seed_set_win_lo_seed + lo_seed_set_win_hi_seed)))
     return hi_seed_winrate
-    """
-    *Old Code
-    p1_index = None
-    p2_index = None
-    tag1 = player_1["tag"].lower()
-    tag2 = player_2["tag"].lower()
-    if tag1 in tag_rank:
-        p1_index = tag_rank[tag1]
-    if tag2 in tag_rank:
-        p2_index = tag_rank[tag2]
-    if not p2_index:
-        return 1.0
-    if not p1_index:
-        return 0.0
-    p1_set_win_p2 = head_to_head[p1_index][p2_index]
-    p2_set_win_p1 = head_to_head[p2_index][p1_index]
-    p1_winrate = (0.5 / (1 + exp(-(player_1["seed"] - player_2["seed"]))) + 
-                 0.5 * (p1_set_win_p2/(p1_set_win_p2 + p2_set_win_p1)))
-    return p1_winrate
-    """
+
 if __name__ == "__main__":
     tournament_name = "get-on-my-level-2016"
     tournament_event ="melee-singles"
@@ -150,6 +133,4 @@ if __name__ == "__main__":
     print(knapSack(budget, cost, val))
     """
     tag_rank, head_to_head = head_to_head_read("head_to_head.txt")
-    #For now program assumes the user inputs the higher seed first and the 
-    #lower seed second. A fix will be implemented at a later time.
     print(winrate(top_players[2], top_players[3], tag_rank, head_to_head))
