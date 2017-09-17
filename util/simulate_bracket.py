@@ -1,5 +1,6 @@
 from math import log 
 from random import random
+import sys
 
 from head_to_head import head_to_head_read
 from print_tree import print_tree
@@ -150,8 +151,10 @@ def simulate_tournament(winners, losers):
 
 
 if __name__ == "__main__":
-    tournament_name = "get-on-my-level-2016"
-    tournament_event ="melee-singles"
+    tournament_name = sys.argv[1]
+    tournament_event = sys.argv[2]
+    # tournament_name = "get-on-my-level-2016"
+    # tournament_event ="melee-singles"
     top_players = get_top_players(tournament_name,
                                   tournament_event)
     winners_bracket, losers_bracket = bracket_builder(tournament_name,
